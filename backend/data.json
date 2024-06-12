@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "type": "Winter boot"
+    },
+    {
+        "id": 1,
+        "type": "Summer boot"
+    },
+    {
+        "id": 2,
+        "type": "Autumn boot"
+    },
+    {
+        "id": 3,
+        "type": "Something better"
+    },
+    {
+        "id": 4,
+        "type": "Best boot"
+    }
+]

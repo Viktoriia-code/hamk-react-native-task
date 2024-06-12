@@ -62,18 +62,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const BootList = [
-  {
-    id: 0,
-    type: 'Winter boot'
-  },
-  {
-    id: 1,
-    type: 'Summer boot'
-  }
-]
-
-const UpdateBoot = ({ visible, onClose, onUpdate, bootToUpdate }) => {
+const UpdateBootComponent = ({ visible, onClose, bootToUpdate, updateIndex, updateBoot }) => {
   const [id, setId] = useState('');
   const [type, setType] = useState('');
 
@@ -106,7 +95,7 @@ const UpdateBoot = ({ visible, onClose, onUpdate, bootToUpdate }) => {
           <View>
             <Button
               title="Update"
-              onPress={() => {onUpdate({ id, type })}}
+              onPress={() => updateBoot(updateIndex, {id: Number(id), type: type})}
             />
           </View>
         </View>
@@ -118,22 +107,95 @@ const UpdateBoot = ({ visible, onClose, onUpdate, bootToUpdate }) => {
 export default function App() {
   let [value1, setValue1] = useState('');
   let [value2, setValue2] = useState('');
-  const [bootList, setBootList]=useState(BootList);
+  const [bootList, setBootList]=useState([]);
   const [modalVisible, setModalVisible]=useState(false);
   const [updateModalVisible, setUpdateModalVisible]=useState(false);
   const [updateIndex, setUpdateIndex] = useState(0);
   const [bootToUpdate, setBootToUpdate] = useState(null);
+
+  // To fetch data
+  const fetchBootList=async()=>{
+    try{
+      let response=await fetch("http://127.0.0.1:3000/data");
+      let json=await response.json();
+      setBootList(json);
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchBootList();
+  }, []);
+
+  // To add a new boot
+  const postBoot=async()=>{
+    try{
+      let response=await fetch("http://127.0.0.1:3000/data",
+      {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({id: Number(value1), type: value2})
+      });
+      let json=await response.json();
+      setBootList(json);
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  
+  // To delete a boot
+  const deleteBoot = async (item_index) => {
+    try {
+      let response = await fetch(`http://127.0.0.1:3000/data/${item_index}`, {
+        method: 'DELETE',
+      });
+      let updatedBootList = await response.json();
+      if (!response.ok) {
+        console.error(updatedBootList.error);
+      } else {
+        setBootList(updatedBootList);
+      }
+    } catch (error) {
+      console.log('Fetch error:', error);
+    }
+  };
+
+  // To update a boot
+  const updateBoot = async (item_index, updatedBootData) => {
+    try {
+      let response = await fetch(`http://127.0.0.1:3000/data/${item_index}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedBootData) // Use the updated boot data
+      });
+      let updatedBootList = await response.json();
+      if (!response.ok) {
+        console.error('Update failed:', updatedBootData.error);
+      } else {
+        setBootList(updatedBootList);
+        setUpdateModalVisible(false);
+      }
+    } catch (error) {
+      console.log('Fetch error:', error);
+    }
+  };
   
   const handleSubmit=()=>{
-    let newValue = {id: Number(value1), type: value2};
-    setBootList(bootList=>[...bootList, newValue]);
+    postBoot();
     setValue1('');
     setValue2('');
     setModalVisible(false);
   }
   
   const deleteFish=(removeId)=>{
-    setBootList(bootList=>bootList.filter((value1, index)=>index!=removeId));
+    deleteBoot(removeId);
   }
 
   const showInputModal=()=>{
@@ -152,22 +214,14 @@ export default function App() {
     setUpdateModalVisible(true);
   }
 
-  const updateBoot=(bootToUpdate)=>{
-    setBootList((prevBootList) =>
-      prevBootList.map((boot, index) =>
-        index === updateIndex ? bootToUpdate : boot
-      )
-    );
-    setUpdateModalVisible(false);
-  }
-
   return (
     <View style={styles.container}>
-      <UpdateBoot
+      <UpdateBootComponent
         visible={updateModalVisible}
         onClose={() => setUpdateModalVisible(false)}
-        onUpdate={updateBoot}
+        updateBoot={updateBoot}
         bootToUpdate={bootToUpdate}
+        updateIndex={updateIndex}
       />
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalStyle}>
