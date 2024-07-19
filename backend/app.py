@@ -7,7 +7,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.json')
+DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'students.json')
 
 def load_data():
   if os.path.exists(DATA_FILE):

@@ -1,15 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Button, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, Touchable, View } from 'react-native';
+import theme from './src/theme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.bgMain,
     alignItems: 'center',
-    padding: 15,
     gap: 15,
+    fontFamily: theme.fonts.main,
     //justifyContent: 'center',
+  },
+  header: {
+    fontSize: theme.fontSizes.heading,
+    textAlign: 'center',
+    fontWeight: theme.fontWeights.bold,
   },
   wrapper: {
     flexDirection: 'row',
@@ -33,20 +39,34 @@ const styles = StyleSheet.create({
     width: '70%',
     paddingVertical: 10,
   },
-  buttonstyle:{
-    width:'30%',
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.roundness,
+  },
+  buttonText: {
+    color: theme.colors.white,
   },
   list: {
-    width: '90%',
-    backgroundColor: 'yellow',
+    width: '100%',
     padding: 10
   },
   listItem: {
-    backgroundColor: '#90ee90',
-    borderWidth: 3,
-    borderColor: 'red',
+    backgroundColor: 'white',
+    borderRadius: theme.roundness,
+    borderWidth: 1,
+    borderColor: theme.colors.textPlaceholder,
     flex: 1,
-    marginBottom: 10
+    marginBottom: 10,
+    padding: 10,
+    // Shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    // Shadow for Android
+    elevation: 2,
   },
   modalStyle: {
     padding: 15,
@@ -235,13 +255,15 @@ export default function App() {
           </View>
         </View>
       </Modal>
-      <Button title='ADD BOOT' onPress={showInputModal} />
-      <Text style={{textAlign: 'center'}}>Boot list</Text>
+      <Pressable onPress={showInputModal} style={styles.button}>
+        <Text style={styles.buttonText}>Add a new student</Text>
+      </Pressable>
+      <Text style={styles.header}>Student list</Text>
       <ScrollView style={styles.list}>
         {bootList.map((item, index)=>(
           <Pressable key={index} onLongPress={()=>deleteFish(index)} onPress={()=>handleUpdate(index)}>
             <View style={styles.listItem} key={index}>
-              <Text>{item.id}: {item.type}</Text>
+              <Text>{item.name}</Text>
             </View>
           </Pressable>
         ))}
