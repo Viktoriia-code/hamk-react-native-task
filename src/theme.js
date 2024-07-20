@@ -2,15 +2,17 @@ import { Platform } from "react-native";
 
 const theme = {
   roundness: 3,
+  roundnessXl: 10,
   colors: {
     textPrimary: '#24292e',
     textSecondary: '#586069',
     textPlaceholder: '#9CA3AF',
-    white: '#ffffff',
-    primary: '#0366d6',
+    white: '#fcfcfc',
+    primary: '#6b89b3',
     bgSecondary: '#24292e',
-    bgMain: '#e1e5e8',
+    bgMain: '#e6e6e6',
     error: '#d73a4a',
+    border: '#ededed'
   },
   fontSizes: {
     body: 14,
