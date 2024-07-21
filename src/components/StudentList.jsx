@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.bold,
   },
   wrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: 'col',
     gap: 10,
     width: '100%',
   },
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 5,
     backgroundColor: 'lightblue',
-    width: '20%',
+    width: '100%',
     paddingVertical: 10,
   },
   textInput2: {
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 5,
     backgroundColor: 'lightblue',
-    width: '70%',
+    width: '100%',
     paddingVertical: 10,
   },
   buttonAdd: {
@@ -59,6 +58,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white,
+    fontWeight: theme.fontWeights.medium,
+    textAlign: 'center'
   },
   list: {
     width: '100%'
@@ -73,7 +74,9 @@ const styles = StyleSheet.create({
   },
   modalStyle: {
     padding: 15,
-    gap: 15
+    gap: 15,
+    backgroundColor: '#fefac0',
+    height: '100%',
   },
   textInput: {
     height: 40,
@@ -83,20 +86,37 @@ const styles = StyleSheet.create({
     width: 200,
     paddingHorizontal: 8,
   },
+  buttonCancel: {
+    backgroundColor: theme.colors.error,
+    padding: 10,
+    minWidth: 80,
+    borderRadius: theme.roundness,
+  },
+  buttonSubmit: {
+    backgroundColor: theme.colors.primary,
+    padding: 10,
+    minWidth: 80,
+    borderRadius: theme.roundness,
+  },
+  buttonWrapper: {
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  }
 });
 
 const UpdateBootComponent = ({ visible, onClose, bootToUpdate, updateIndex, updateBoot }) => {
   const [id, setId] = useState('');
-  const [type, setType] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     setId(bootToUpdate==undefined ? "" :bootToUpdate.id);
-    setType(bootToUpdate==undefined ? "" :bootToUpdate.type);
+    setName(bootToUpdate==undefined ? "" :bootToUpdate.name);
   }, [bootToUpdate, visible]);
 
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.modalStyle}>
+        <Text style={styles.header}>Info about the student</Text>
         <View style={styles.wrapper}>
           <TextInput
             placeholder="Boot ID..."
@@ -107,8 +127,8 @@ const UpdateBootComponent = ({ visible, onClose, bootToUpdate, updateIndex, upda
           <TextInput
             placeholder="Boot type..."
             style={styles.textInput}
-            value={type}
-            onChangeText={setType}
+            value={name}
+            onChangeText={setName}
           />
         </View>
         <View style={styles.wrapper}>
@@ -118,7 +138,7 @@ const UpdateBootComponent = ({ visible, onClose, bootToUpdate, updateIndex, upda
           <View>
             <Button
               title="Update"
-              onPress={() => updateBoot(updateIndex, {id: Number(id), type: type})}
+              onPress={() => updateBoot(updateIndex, {id: Number(id), name: name})}
             />
           </View>
         </View>
@@ -143,17 +163,6 @@ export default function StudentList() {
     const response = await axios(configurationObject);
     setBootList(response.data);
   };
-  // To fetch data
-  {/*const fetchBootList=async()=>{
-    try{
-      let response=await fetch("http://127.0.0.1:3000/data");
-      let json=await response.json();
-      setBootList(json);
-    }
-    catch(error){
-      console.log(error);
-    }
-  }*/}
 
   useEffect(() => {
     fetchBootList();
@@ -168,7 +177,7 @@ export default function StudentList() {
         headers:{
           'Content-Type':'application/json'
         },
-        body:JSON.stringify({id: Number(value1), type: value2})
+        body:JSON.stringify({id: Number(value1), name: value2})
       });
       let json=await response.json();
       setBootList(json);
@@ -255,13 +264,22 @@ export default function StudentList() {
       />
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalStyle}>
+          <Text style={styles.header}>Add a new student</Text>
           <View style={styles.wrapper}>
-            <TextInput placeholder='Boot ID...' style={styles.textInput1} value={value1} onChangeText={setValue1}/>
-            <TextInput placeholder='Boot type...' style={styles.textInput2} value={value2} onChangeText={setValue2}/>
+            <Text>ID:</Text>
+            <TextInput placeholder='Enter student ID' style={styles.textInput1} value={value1} onChangeText={setValue1}/>
           </View>
           <View style={styles.wrapper}>
-            <View style={styles.buttonstyle}><Button title='Cancel' onPress={handleCancel} /></View>
-            <View style={styles.buttonstyle}><Button title='Ok' onPress={handleSubmit} /></View>
+            <Text>Name:</Text>
+            <TextInput placeholder='Enter student name' style={styles.textInput2} value={value2} onChangeText={setValue2}/>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <Pressable style={styles.buttonCancel} onPress={handleCancel}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </Pressable>
+            <Pressable style={styles.buttonSubmit} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Ok</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>

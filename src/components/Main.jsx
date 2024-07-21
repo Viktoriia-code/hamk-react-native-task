@@ -20,9 +20,7 @@ const Main = () => {
       <Routes>
         <Route path="/" element={<LessonList />} />
         <Route path="/students" element={<StudentList />} />
-        {/* <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/students/:id" element={<SingleStudent />} exact />
-        <Route path="/lessons/:id" element={<SingleLesson />} exact /> */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>
   );

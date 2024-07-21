@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Button, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, Touchable, View } from 'react-native';
+import { Button, Modal, Pressable, ScrollView, StyleSheet, TextInput, Touchable, View } from 'react-native';
 import theme from '../theme';
 import { PlusIcon } from 'react-native-heroicons/solid'
 import axios from 'axios';
 import { BASE_URL } from '@env';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -97,6 +98,7 @@ const UpdateBootComponent = ({ visible, onClose, bootToUpdate, updateIndex, upda
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.modalStyle}>
+        <Text style={styles.header}>Info about the lesson</Text>
         <View style={styles.wrapper}>
           <TextInput
             placeholder="Boot ID..."
@@ -256,6 +258,7 @@ export default function LessonList() {
       />
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalStyle}>
+          <Text style={styles.header}>Add a new lesson</Text>
           <View style={styles.wrapper}>
             <TextInput placeholder='Boot ID...' style={styles.textInput1} value={value1} onChangeText={setValue1}/>
             <TextInput placeholder='Boot type...' style={styles.textInput2} value={value2} onChangeText={setValue2}/>
