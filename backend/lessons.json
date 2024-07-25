@@ -1,34 +1,38 @@
 [
-  {
-      "id": 0,
-      "name": "Tennis A-1"
-  },
-  {
-      "id": 1,
-      "name": "Tennis children"
-  },
-  {
-      "id": 3,
-      "name": "Tennis adults"
-  },
-  {
-      "id": 5,
-      "name": "Tennis private"
-  },
-  {
-      "id": 6,
-      "name": "Padel weekend"
-  },
-  {
-      "id": 7,
-      "name": "Padel private"
-  },
-  {
-      "id": 8,
-      "name": "Padel for adults"
-  },
-  {
-      "id": 9,
-      "name": "Other"
-  }
+    {
+        "id": 0,
+        "title": "Tennis A-3"
+    },
+    {
+        "id": 1,
+        "title": "Tennis children (5-7 years)"
+    },
+    {
+        "id": 3,
+        "title": "Tennis adults"
+    },
+    {
+        "id": 5,
+        "title": "Tennis private"
+    },
+    {
+        "id": 6,
+        "title": "Padel weekend"
+    },
+    {
+        "id": 7,
+        "title": "Padel private"
+    },
+    {
+        "id": 8,
+        "title": "Padel for adults"
+    },
+    {
+        "id": 9,
+        "title": "Other"
+    },
+    {
+        "id": 23,
+        "title": "Tennis from 2"
+    }
 ]
